@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <title>processing.js test</title>
+  <script type="text/javascript" src="processing-0.8.js"></script>
+  <script type="text/javascript">
+    
+    // Initialize all canvas elements containing a script with
+    // type="application/processing".
+    (function(window,document){
+      if ( window.addEventListener ) {
+        window.addEventListener( 'load', init, false );
+      } else if ( window.attachEvent ) {
+        window.attachEvent( 'onload', init );
+      }
+      
+      function init() {
+        var canvases = document.getElementsByTagName( 'canvas' ),
+          canvas,
+          child,
+          i,
+          j;
+        
+        for ( i = 0; i < canvases.length; i++ ) {
+          canvas = canvases[i];
+          child = canvas.firstChild;
+          do {
+            if ( /^script$/i.test( child.nodeName ) && child.type == 'application/processing' ) {
+              Processing( canvas, child.innerHTML );
+              break;
+            }
+          } while ( child = child.nextSibling );
+        }
+      }
+    })(this,document);
+    
+  </script>
+</head>
+<body>
+  <canvas width="200px" height="200px">
+    <script type="application/processing">
+    /* 
+      PROCESSINGJS.COM - BASIC EXAMPLE
+      Delayed Mouse Tracking  
+      MIT License - Hyper-Metrix.com/F1LT3R
+      Native Processing compatible 
+    */  
+
+    // Global variables
+    float radius = 50.0;
+    int X, Y;
+    int nX, nY;
+    int delay = 16;
+
+    // Setup the Processing Canvas
+    void setup(){
+      size( 200, 200 );
+      strokeWeight( 10 );
+      frameRate( 15 );
+      X = width / 2;
+      Y = width / 2;
+      nX = X;
+      nY = Y;  
+    }
+
+    // Main draw loop
+    void draw(){
+
+      radius = radius + sin( frameCount / 4 );
+
+      // Track circle to new destination
+      X+=(nX-X)/delay;
+      Y+=(nY-Y)/delay;
+
+      // Fill canvas grey
+      background( 100 );
+
+      // Set fill-color to blue
+      fill( 0, 121, 184 );
+
+      // Set stroke-color white
+      stroke(255); 
+
+      // Draw circle
+      ellipse( X, Y, radius, radius );                  
+    }
+
+
+    // Set circle's next destination
+    void mouseMoved(){
+      nX = mouseX;
+      nY = mouseY;  
+    }
+    </script>
+    <img src="http://processingjs.org/gfx/basic-example.gif"/>
+  </canvas>
+</body>
+</html>
